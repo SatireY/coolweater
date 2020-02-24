@@ -1,6 +1,7 @@
-package com.coolweather.android.util;
+package com.coolweather.android;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,8 @@ import com.coolweather.android.R;
 import com.coolweather.android.db.City;
 import com.coolweather.android.db.County;
 import com.coolweather.android.db.Province;
+import com.coolweather.android.util.HttpUtil;
+import com.coolweather.android.util.Utility;
 
 import org.jetbrains.annotations.NotNull;
 import org.litepal.LitePal;
@@ -32,7 +35,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class AreaFragment extends Fragment {
+public class ChooseAreaFragment extends Fragment {
 
     public static final int LEVERL_PROVINCE = 0;
 
@@ -82,7 +85,7 @@ public class AreaFragment extends Fragment {
      */
     private int currentLevel;
 
-    public AreaFragment() {
+    public ChooseAreaFragment() {
 
     }
 
@@ -110,6 +113,12 @@ public class AreaFragment extends Fragment {
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);
                     queryCounties();
+                } else if (currentLevel == LEVEL_COUNTY) {
+                    String weatherId = countyList.get(position).getWeatherId();
+                    Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                    intent.putExtra("weather_id", weatherId);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
             }
         });
